@@ -1,3 +1,4 @@
 */sound/sound.cache
 demos
-*vpk*
+no_*
+*.sound.cache

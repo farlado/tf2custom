@@ -1,0 +1,3 @@
+[submodule "modules/nohats"]
+	path = modules/nohats
+	url = https://github.com/MisterAnchois/no-hats-bgum
