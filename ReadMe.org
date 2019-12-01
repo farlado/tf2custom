@@ -1,0 +1,4 @@
+#+TITLE: Farlado's Team Fortress 2 Config
+#+STARTUP: overview, inlineimages
+
+[[./etc/screencap.jpg]]
