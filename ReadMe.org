@@ -12,5 +12,5 @@ All you have to do is clone this repository as =custom= in =steamapps/common/Tea
 ** Startup options
 I would recommend this set of startup options with this config:
 #+begin_example
--freq 74 -w 1366 -w 768 -high -windowed -noborder -novid -nohltv -nojoy -nosteamcontroller -softparticlesdefaultoff -limitvsconst -reusue -dxlevel 92 -threads 7 -affinity 3 -gl_enablesamplerobjects +exec autoexec
+-freq 74 -w 1366 -w 768 -high -windowed -noborder -novid -nohltv -nojoy -nosteamcontroller -softparticlesdefaultoff -limitvsconst -reusue -dxlevel 90 -threads 7 -affinity 3 -gl_enablesamplerobjects +exec autoexec
 #+end_example
