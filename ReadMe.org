@@ -1,4 +1,16 @@
-#+TITLE: Farlado's Team Fortress 2 Config
-#+STARTUP: overview, inlineimages
+#+title: Farlado's TF2 Configuration 🐉
+#+startup: overview, inlineimages
 
 [[./etc/screencap.jpg]]
+
+* About this config
+bla bla bla ill get to writing this later
+
+** Installation
+All you have to do is clone this repository as =custom= in =steamapps/common/Team Fortress 2/tf=, load all submodules, and it's good to go.
+
+** Startup options
+I would recommend this set of startup options with this config:
+#+begin_example
+-freq 74 -w 1366 -w 768 -high -windowed -noborder -novid -nohltv -nojoy -nosteamcontroller -softparticlesdefaultoff -limitvsconst -reusue -dxlevel 92 -threads 7 -affinity 3 -gl_enablesamplerobjects +exec autoexec
+#+end_example
