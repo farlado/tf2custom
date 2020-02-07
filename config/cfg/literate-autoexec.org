@@ -10,14 +10,25 @@
 - [[#engine][Engine]]
   - [[#memoryfilesystem][Memory/Filesystem]]
   - [[#threading][Threading]]
+  - [[#graphics][Graphics]]
   - [[#opengl][OpenGL]]
 - [[#network][Network]]
   - [[#packets][Packets]]
   - [[#snapshots][Snapshots]]
   - [[#file-handling][File handling]]
-- [[#graphics][Graphics]]
+- [[#graphics-1][Graphics]]
+  - [[#textures][Textures]]
+  - [[#models][Models]]
+  - [[#water][Water]]
+  - [[#shadows][Shadows]]
+  - [[#lighting][Lighting]]
+  - [[#particles][Particles]]
+  - [[#antialiasing][Antialiasing]]
+  - [[#post-processing][Post-Processing]]
 - [[#sound][Sound]]
   - [[#volume][Volume]]
+  - [[#quality][Quality]]
+  - [[#spatialization][Spatialization]]
   - [[#hit-kill-sounds][Hit-/Kill-sounds]]
 - [[#gameplay][Gameplay]]
   - [[#keyboardmouse][Keyboard/Mouse]]
@@ -28,7 +39,9 @@
     - [[#crosshair][Crosshair]]
     - [[#damage-numbers][Damage Numbers]]
     - [[#target-id][Target ID]]
+    - [[#killstreaks][Killstreaks]]
   - [[#not-in-game][Not In-Game]]
+    - [[#console][Console]]
     - [[#tutorials][Tutorials]]
     - [[#matchmaking-1][Matchmaking]]
 - [[#temporarily-kept-here][temporarily kept here]]
@@ -56,6 +69,7 @@ These settings pertain specifically to using asynchronous (threaded) execution. 
   net_queued_packet_thread 1 // Threaded packet splitting
 
   mat_queue_mode 2 // Force asynchronous material queue
+  r_threaded_renderables 1 // Asynchronous renderables
   r_threaded_particles 1 // Asynchronous particle loading
   r_queued_decals 1 // Offload decals to the material queue
   r_queued_post_processing 1 // Offload post-processing to the material queue
@@ -76,13 +90,36 @@ These settings pertain specifically to using asynchronous (threaded) execution. 
   mod_forcedata 0 // Don't force loading by default
 #+end_src
 
+** Graphics
+Effects that will speed up the game without truly changing visual effects.
+#+begin_src conf-javaprop
+  mat_vsync 0 // Dramatically reduce input lag
+  mat_powersavingsmode 0 // Disable "power saving"
+  engine_no_focus_sleep 0 // Linux fix for focus problems
+  r_fastzreject 1 // Offload some rendering to the CPU
+  r_occlusion 1 // Don't draw what isn't seen
+  r_occludeemaxarea 7.5 // Skip occlusion of large objects
+  r_occluderminarea 15 // Skip things too small
+  r_occludermincount 1 // In case somehow one is filtered out
+  r_norefresh 1 // Don't store useless stuff
+  fast_fogvolume 1 // Fast path for water leaf
+  r_pixelfog 1 // Use pixel shader for fog
+  sv_alternateticks 0 // Run every tick
+  mod_offline_hdr_switch 1 // Avoid obsolete stuff
+  mat_forcemanagedtextureintohardware 0 // No trickery
+  r_hunkalloclightmaps 1 // Fix some light data bugs and cache lighting
+  sys_minidumpspewlines 0 // Don't spew to memory in case of crash
+  mp_usehwmmodels -1 // Skip HW morth models
+  fps_max 0 // Ensure optimal use of the CPU
+#+end_src
+
 ** OpenGL
 For systems that use OpenGL instead of DirectX (read: Linux), these settings ensure optimal graphics performance.
 #+begin_src conf-javaprop
   gl_debug_output 0 // No need for debug output
   gl_pow2_tempmem 1 // Improve memory allocation
   gl_mtglflush_at_tof 1 // Makes frame output smoother for tiny fps hit
-  gl_magnify_resolve_mode // Use the fastest resolve mode when upscaling
+  gl_magnify_resolve_mode 1 // Use the fastest resolve mode when upscaling
   mat_texture_reload_frame_swap_workaround 0 // Disable a heavy workaround
 #+end_src
 
@@ -130,6 +167,111 @@ Sometimes servers will try to load a bunch of extra crap. All I want are maps, I
 * Graphics
 These settings specifically pertain to graphics and improving the visual quality of the game or providing extra performance by making it look like total garbage.
 
+** Textures
+General settings about textures.
+#+begin_src conf-javaprop
+  mat_mipmaptextures 0 // Don't do texture mipmapping
+  mat_trilinear 0 // Don't do trilinear filtering
+  mat_filtertextures 0 // Don't filter textures
+  mat_picmip 2 // Highest texture performance
+#+end_src
+
+** Models
+General settings about models.
+#+begin_src conf-javaprop
+  r_rootlod 2 // Maximum performance models
+  r_lod -1 // Properly fade through LODs
+  lod_transitiondist -1 // Don't fade objects
+  mat_max_worldmesh_vertices 65536 // Reduce mesh count
+#+end_src
+
+** Water
+Liquid found in 2fort and on a couple other maps. An attempt to make it as easy to see things in the water as possible.
+#+begin_src conf-javaprop
+  r_waterdrawreflection 0 // No water reflections, boosts performance
+  r_waterdrawrefraction 1 // See underwater things from above
+  r_waterforceexpensive 0 // Don't force higher quality water
+  r_cheapwaterstart 0 // Use cheap water as much as possible
+  r_cheapwaterend .1 // please and thank you
+#+end_src
+
+** Shadows
+Another thing I don't really need. They're equally costly.
+#+begin_src conf-javaprop
+  r_shadows 0 // Disable shadows
+  r_shadowrendertotexture 0 // Don't do fancy shadows
+  cl_blobbyshadows 1 // Use blobs in place of character shape
+  r_shadowmaxrendered 0 // I said DISABLE SHADOWS
+
+  r_flashlightdepthtexture 0 // Disable the CPU intensive depth texturing
+  r_flashlightmodels 0 // Disable flashlight effect on models
+  r_flashlightculldepth 0 // Disable extra flashlight stuff
+  r_flashlightscissor 0 // ^
+  r_flashlightrender 0 // ^
+#+end_src
+
+** Lighting
+This allows for some cheeky stuff to happen, and I can get even better visuals this way.
+#+begin_src conf-javaprop
+  r_dopixelvisibility 0 // Don't run costly visibility testing
+  mat_filterlightmaps 0 // Don't filter lightmaps
+
+  mat_phong 0 // Disable phong shader for major performance improvement
+  mat_specular 1 // This keeps shiny things shiny when mat_phong is 0
+  mat_bumpmap 1 // Keep bumpmapping, small performance cost
+
+  mat_diable_fancy_blending 1 // Disable some fancier effects
+  mat_disable_lightwarp 1 // ^
+  mat_disable_ps_patch 1 // ^
+  mat_disable_bloom 1 // ^
+
+  r_ambientboost 1 // Boost reflected light for vision advantages
+  r_rimlight 1 // A distinct choice to make characters pop out
+  r_ambientmin .4 // Make characters stand out further
+
+  r_dynamic 0 // Don't flash muzzles, it's distracting
+  r_maxdlights 0 // No dynamic lights at all, please
+  tf_sheen_alpha_firstperson 0 // No kill-streak sheen
+  tf_sheen_framerate 0 // ^
+
+  r_worldlights 4 // Use the maximum number of world lights
+  r_worldlightmin .008 // Use most world lighting
+
+  r_lightaverage 0 // Disable a costly lighting system
+  mat_parallaxmap 0 // Possibly obsolete
+#+end_src
+
+** Particles
+The real drain when it comes to Team Fortress 2. This stuff KILLS threads.
+#+begin_src conf-javaprop
+  mat_reduceparticles 0 // Doesn't need to be on, particle SYSTEMS are the problem
+  tf_particles_disable_weather 1 // Clarity, one less particle system
+  cl_new_impact_effects 0 // Use the older impact effects
+  r_drawflecks 0 // Don't draw flecks from impacts
+  cl_particle_batch_mode 1 // Default behavior
+#+end_src
+
+** Antialiasing
+I don't use it. It's slow and bogs the game down.
+#+begin_src conf-javaprop
+  mat_software_aa_strength 0 // No software AA
+  mat_software_aa_strength_vgui 0 // ^
+  mat_alphacoverage 0 // No alpha-to-coverage
+  mat_antialias 1 // Do not do antialiasing
+#+end_src
+
+** Post-Processing
+These are some effects that are best removed.
+#+begin_src conf-javaprop
+  mat_motion_blur_enabled 0 // No motion blur, PLEASE
+  mat_postprocessing_combine 1 // Combine post-processing effects
+  mat_hdr_level 0 // No HDR, LDR only
+  mat_colorcorrection 0 // No color correction
+  mat_colcorrection_disableentities 1 // Skip most client-think for color correction
+  mat_autoexposure_max 0 // No autoexposure
+  mat_autoexposure_min 0 // please and thanks
+#+end_src
+
 * Sound
 These settings specifically relate to sound configuration.
 
@@ -140,11 +282,34 @@ Team Fortress 2 is /incredibly/ loud by default. I don't like that one bit.
   snd_musicvolume 0 // Don't play music (I play my own music)
 #+end_src
 
+** Quality
+This allows a balancing of quality and performance when it comes to audio.
+#+begin_src conf-javaprop
+  snd_mixahead .066 // Balance between sound delay and performance, syncs w/ sound clock
+  snd_pitchquality 0 // Use a linear mixer for sounds, to improve performance
+  snd_surround_speakers -1 // Automatically determine speaker configuration
+  snd_disable_mixer_duck 1 // Play all sounds at intended volumes
+  snd_noextraupdate 1 // Do not update sound twice
+#+end_src
+
+** Spatialization
+Sound travel, volume falloff, and DSP effects are configured here. But I don't really wanna use any of them, so I'll just turn DSP off.
+#+begin_src conf-javaprop
+  snd_spatialize_roundrobin 3 // Spatialize every 8 frames using round-robin
+  dsp_enhance_stereo 0 // Disable extra spatial DSP effects and delays
+  dsp_facingaway 0 // Disable facing away and directional effects
+  dsp_slow_cpu 1 // Disable enhanced spatialization
+  dsp_speaker 0 // Disable administrator effects
+  dsp_spatial 0 // Disable all  spatial effects
+  dsp_water 0 // Disable the water effects
+  dsp_room 0 // Disable automatic DSP
+#+end_src
+
 ** Hit-/Kill-sounds
 I have my own hit- and kill-sounds which are in this repository. I configure them here.
 #+begin_src conf-javaprop
   tf_dingalingaling 1 // Aural feedback to landing a hit
-  tf_dingaling_lasthit 1 // Aural feedback to landing a kill
+  tf_dingalingaling_lasthit 1 // Aural feedback to landing a kill
   tf_dingaling_volume 1 // I want to hear it loud and clear
   tf_dingaling_pitchmindmg 140 // High pitched when damage is low
   tf_dingaling_pitchmaxdmg 5 // BOOMING when damage is high
@@ -225,8 +390,22 @@ This lets you know who you're looking at. I also put health here instead of floa
   tf_hud_target_id_disable_floating_health 1 // Put health in target ID
 #+end_src
 
+*** Killstreaks
+I don't care to see them, don't show them.
+#+begin_src conf-javaprop
+  cl_hud_killstreak_display_time 0 // Never show killstreaks
+#+end_src
+
 ** Not In-Game
 These are settings related to menus mainly but there's a little bit more here too.
+
+*** Console
+Ah, the console. I use it a lot because I happen to break things a lot.
+#+begin_src conf-javaprop
+  con_enable 1 // Enable the developer console
+  con_nprint_bgalpha 100 // Opacity
+  con_nprint_bgborder 1 // Border...?
+#+end_src
 
 *** Tutorials
 I don't want to be prompted about tutorials every time I start Team Fortress 2.
@@ -297,49 +476,16 @@ these are settings I haven't gotten around to merging into the literate configur
 
   // Sound
   snd_cull_duplicates 0
-  snd_noextraupdate 1
   snd_defer_trace 1
-  dsp_water 0
-  dsp_spatial 0
 
   // Basic model/texture quality
-  fps_max 90
-  mat_vsync 0
-  mat_dxlevel 92
-  r_lod 2
-  r_rootlod 2
-  mat_mipmaptextures 0
-  mat_filtertextures 0
-  mat_picmip 2
-  mat_phong 0
-  mat_specular 0
-  mat_fastspecular 1
-  mat_bumpmap 0
+  mat_dxlevel 90
   mat_reducefillrate 1
 
   // Lighting
-  r_dynamic 0
-  r_worldlights 0
-  r_worldlightmin .1
-  r_maxdlights 0
-  r_rimlight 0
-  r_shadows 0
-  r_shadowmaxrendered 0
   r_lightcache_zbuffercache 1
-  r_ambientboost 0
-  r_ambientmin .5
-  r_lightaverage 0
-  mat_filterlightmaps 0
 
   // Fancy lighting
-  mat_disable_fancy_blending 1
-  mat_disable_lightwarp 1
-  mat_disable_ps_patch 1
-  mat_disable_bloom 1
-  mat_colorcorrection 0
-  mat_colcorrection_disableentities 0
-  tf_sheen_alpha_firstperson 0
-  tf_sheen_framerate 0
   r_dopixelvisibility 1
   r_pixelvisibility_partial 1
 
@@ -385,7 +531,6 @@ these are settings I haven't gotten around to merging into the literate configur
   cl_jiggle_bone_framerate_cutoff 1
   cl_show_splashes 0
   func_break_max_pieces 0
-  lod_transitiondist -1
 
   // Map details and ropes
   r_renderoverlayfragment 1
@@ -403,16 +548,8 @@ these are settings I haven't gotten around to merging into the literate configur
   r_cheapwaterend 150
   mat_wateroverlaysize 256
   r_forcewaterleaf 1
-  r_waterdrawreflection 0
-  r_waterdrawrefraction 1
-  r_waterforceexpensive 0
-  r_waterforcereflectentities 0
 
   // Effects
-  tf_particles_disable_weather 1
-  mat_motion_blur_enabled 0
-  cl_new_impact_effects 0
-  mat_reduceparticles 1
   pyro_dof 0
   pyro_vignette 0
 
@@ -425,14 +562,10 @@ these are settings I haven't gotten around to merging into the literate configur
   r_entityclips 1
   r_frustumcullworld 1
   r_occludermincount 1
-  mat_antialias 0
   mat_aaquality 0
   mat_forceaniso 0
-  mat_trilinear 0
-  mat_hdr_level 0
   cl_threaded_client_leaf_system 1
   studio_queue_mode 1
-  r_fastzreject -1
   mat_clipz 1
   mat_levelflush 1
 
@@ -464,9 +597,6 @@ these are settings I haven't gotten around to merging into the literate configur
   tf_spectate_pyrovision 0
   tf_replay_pyrovision 0
   tf_spec_xray_disable 1
-  con_enable 1
-  con_nprint_bgalpha 100
-  con_nprint_bgborder 1
   cl_vote_ui_active_after_voting 1
   cl_vote_ui_show_notification 0
   tf_item_inspect_model_auto_spin 0
@@ -494,5 +624,4 @@ these are settings I haven't gotten around to merging into the literate configur
   hud_achievement_glowtime 0
   hud_achievement_tracker 0
   hud_achievement_count 0
-  cl_hud_killstreak_display_time 0
 #+end_src
