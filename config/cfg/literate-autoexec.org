@@ -1,3 +1,4 @@
+e
 #+title: Farlado's Illiterate TF2 Config
 #+subtitle: A less-than-sane literate configuration for Team Fortress 2
 #+author: Farlado
@@ -86,8 +87,8 @@ These settings pertain specifically to using asynchronous (threaded) execution. 
   snd_mix_async 1 // Asynchronous sound mixing
 
   mod_forcetouchdata 1 // Put all data into cache on load
-  mod_touchalldata 0 // Use fully asynchronous loading
-  mod_forcedata 0 // Don't force loading by default
+  mod_touchalldata 1 // Use mostly synchronous loading
+  mod_forcedata 1 // Force loading by default
 #+end_src
 
 ** Graphics
@@ -110,7 +111,7 @@ Effects that will speed up the game without truly changing visual effects.
   r_hunkalloclightmaps 1 // Fix some light data bugs and cache lighting
   sys_minidumpspewlines 0 // Don't spew to memory in case of crash
   mp_usehwmmodels -1 // Skip HW morth models
-  fps_max 0 // Ensure optimal use of the CPU
+  fps_max 90 // Cap FPS so it doesn't go hog wild
 #+end_src
 
 ** OpenGL
@@ -213,14 +214,15 @@ Another thing I don't really need. They're equally costly.
 ** Lighting
 This allows for some cheeky stuff to happen, and I can get even better visuals this way.
 #+begin_src conf-javaprop
-  r_dopixelvisibility 0 // Don't run costly visibility testing
+  r_dopixelvisibility 1 // Run pixel visibility testing
+  r_pixelvisibility_partial 1 // Use partial visibility algorithm
   mat_filterlightmaps 0 // Don't filter lightmaps
 
   mat_phong 0 // Disable phong shader for major performance improvement
   mat_specular 1 // This keeps shiny things shiny when mat_phong is 0
   mat_bumpmap 1 // Keep bumpmapping, small performance cost
 
-  mat_diable_fancy_blending 1 // Disable some fancier effects
+  mat_disaadble_fancy_blending 1 // Disable some fancier effects
   mat_disable_lightwarp 1 // ^
   mat_disable_ps_patch 1 // ^
   mat_disable_bloom 1 // ^
@@ -234,8 +236,8 @@ This allows for some cheeky stuff to happen, and I can get even better visuals t
   tf_sheen_alpha_firstperson 0 // No kill-streak sheen
   tf_sheen_framerate 0 // ^
 
-  r_worldlights 4 // Use the maximum number of world lights
-  r_worldlightmin .008 // Use most world lighting
+  r_worldlights 0 // Don't use world lights
+  r_worldlightmin .1 // Reject most world lighting
 
   r_lightaverage 0 // Disable a costly lighting system
   mat_parallaxmap 0 // Possibly obsolete
@@ -264,7 +266,7 @@ I don't use it. It's slow and bogs the game down.
 These are some effects that are best removed.
 #+begin_src conf-javaprop
   mat_motion_blur_enabled 0 // No motion blur, PLEASE
-  mat_postprocessing_combine 1 // Combine post-processing effects
+  mat_postprocessing_combine 0 // Combine post-processing effects
   mat_hdr_level 0 // No HDR, LDR only
   mat_colorcorrection 0 // No color correction
   mat_colcorrection_disableentities 1 // Skip most client-think for color correction
@@ -289,6 +291,7 @@ This allows a balancing of quality and performance when it comes to audio.
   snd_pitchquality 0 // Use a linear mixer for sounds, to improve performance
   snd_surround_speakers -1 // Automatically determine speaker configuration
   snd_disable_mixer_duck 1 // Play all sounds at intended volumes
+  snd_cull_duplicates 0 // Don't prevent playing duplicate sounds
   snd_noextraupdate 1 // Do not update sound twice
 #+end_src
 
@@ -298,6 +301,7 @@ Sound travel, volume falloff, and DSP effects are configured here. But I don't r
   snd_spatialize_roundrobin 3 // Spatialize every 8 frames using round-robin
   dsp_enhance_stereo 0 // Disable extra spatial DSP effects and delays
   dsp_facingaway 0 // Disable facing away and directional effects
+  snd_defer_trace 1 // Defer spatialization to next frame tracing
   dsp_slow_cpu 1 // Disable enhanced spatialization
   dsp_speaker 0 // Disable administrator effects
   dsp_spatial 0 // Disable all  spatial effects
@@ -467,16 +471,12 @@ The matchmaking menu sucks. At least I can make it not take so long to open.
 
 * TODO temporarily kept here
 these are settings I haven't gotten around to merging into the literate configuration. please bear with me.
-#+begin_src conf-javaprop :tangle no
+#+begin_src conf-javaprop
   // Network
   cl_lagcompensation 1
-  sv_allowdownload 1
+  sv_adsallowdownload 1
   sv_allowupload 1
   net_splitrate 2
-
-  // Sound
-  snd_cull_duplicates 0
-  snd_defer_trace 1
 
   // Basic model/texture quality
   mat_dxlevel 90
@@ -528,7 +528,7 @@ these are settings I haven't gotten around to merging into the literate configur
   cl_detailfade 0
   cl_drawmonitors 0
   cl_ejectbrass 0
-  cl_jiggle_bone_framerate_cutoff 1
+  cl_jiggle_bone_framerate_cutoff 0
   cl_show_splashes 0
   func_break_max_pieces 0
 
@@ -543,38 +543,24 @@ these are settings I haven't gotten around to merging into the literate configur
   rope_wind_dist 0
   rope_averagelight 0
 
-  // Water
-  r_cheapwaterstart 0
-  r_cheapwaterend 150
-  mat_wateroverlaysize 256
-  r_forcewaterleaf 1
-
   // Effects
   pyro_dof 0
   pyro_vignette 0
 
   // Unsorted
-  mat_envmapsize 0
-  mat_envmaptgasize 0
-  mat_max_worldmesh_vertices 65565
   mat_monitorgamma 1.6
-  mat_alphacoverage 0
   r_entityclips 1
   r_frustumcullworld 1
-  r_occludermincount 1
   mat_aaquality 0
   mat_forceaniso 0
-  cl_threaded_client_leaf_system 1
-  studio_queue_mode 1
   mat_clipz 1
-  mat_levelflush 1
+  violence_hblood 0
 
   // Decals
-  r_threaded_renderables 1
   net_queue_trace 0
   r_drawmodeldecals 0
-  r_decals 0
-  mp_decals 0
+  r_decals 1
+  mp_decals 1
 
   // Unsorted
   sv_lan 1
