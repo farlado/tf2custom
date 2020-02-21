@@ -1,4 +1,3 @@
-e
 #+title: Farlado's Illiterate TF2 Config
 #+subtitle: A less-than-sane literate configuration for Team Fortress 2
 #+author: Farlado
@@ -86,9 +85,9 @@ These settings pertain specifically to using asynchronous (threaded) execution. 
   snd_async_minsize 0 // Fast path to async load
   snd_mix_async 1 // Asynchronous sound mixing
 
-  mod_forcetouchdata 1 // Put all data into cache on load
-  mod_touchalldata 1 // Use mostly synchronous loading
-  mod_forcedata 1 // Force loading by default
+  mod_forcetouchdata 0 // Load data as needed
+  mod_touchalldata 0 // Asynchronous loading
+  mod_forcedata 0 // Don't force loading
 #+end_src
 
 ** Graphics
@@ -110,7 +109,7 @@ Effects that will speed up the game without truly changing visual effects.
   mat_forcemanagedtextureintohardware 0 // No trickery
   r_hunkalloclightmaps 1 // Fix some light data bugs and cache lighting
   sys_minidumpspewlines 0 // Don't spew to memory in case of crash
-  mp_usehwmmodels -1 // Skip HW morth models
+  mp_usehwmmodels -1 // Skip HW morph models
   fps_max 90 // Cap FPS so it doesn't go hog wild
 #+end_src
 
@@ -250,7 +249,7 @@ The real drain when it comes to Team Fortress 2. This stuff KILLS threads.
   tf_particles_disable_weather 1 // Clarity, one less particle system
   cl_new_impact_effects 0 // Use the older impact effects
   r_drawflecks 0 // Don't draw flecks from impacts
-  cl_particle_batch_mode 1 // Default behavior
+  cl_particle_batch_mode 2 // Optimized particle batching
 #+end_src
 
 ** Antialiasing
@@ -479,7 +478,7 @@ these are settings I haven't gotten around to merging into the literate configur
   net_splitrate 2
 
   // Basic model/texture quality
-  mat_dxlevel 90
+  mat_dxlevel 92
   mat_reducefillrate 1
 
   // Lighting

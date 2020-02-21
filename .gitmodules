@@ -1,0 +1,6 @@
+[submodule "hud"]
+	path = hud
+	url = https://github.com/criticalflaw/flawhud
+[submodule "nohats"]
+	path = nohats
+	url = https://github.com/MisterAnchois/no-hats-bgum
