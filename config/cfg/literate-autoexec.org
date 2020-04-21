@@ -48,425 +48,523 @@
 #+END_QUOTE
 
 * About this configuration
-Much of this configuration is admittedly +lifted from+ inspired by [[https://github.com/mastercoms/mastercomfig][mastercomfig]], but is organized in a way more readable way and a way that is much easier to understand. I will admit many comments may be taken from mastercomfig, but this is to ensure the best documentation of my configuration as possible between the general notes and specifically what each setting entails.
+
+  Much of this configuration is admittedly +lifted from+ inspired by [[https://github.com/mastercoms/mastercomfig][mastercomfig]],
+  but is organized in a way more readable way and  a way that is much easier to
+  understand. I will admit many comments may be taken from mastercomfig, but
+  this is to ensure the best documentation of my configuration as possible
+  between the general notes and specifically what each setting entails.
 
 * Engine
-All of these settings specifically pertain to optimizing the engine behind Team Fortress 2. These settings change nothing visually, and only are present to improve performance.
+
+  All of these settings specifically pertain to optimizing the engine behind
+  Team Fortress 2. These settings change nothing visually, and only are present
+  to improve performance.
 
 ** Memory/Filesystem
-These settings specifically improve memory allocation, memory use, and loading from the filesystem.
-#+begin_src conf-javaprop
-  lzma_persistent_buffer 1 // Keep LZMA compression in memory, reduces need for reloads
-  cl_always_flush_models 0 // Keep models loaded, maintains preloading
 
-  filesystem_buffer_size 32768 // 32KB for better block size optimization
-  filesystem_max_stdio_read 64 // Use a higher max read cap (64MB)
-#+end_src
+   These settings specifically improve memory allocation, memory use, and
+   loading from the filesystem.
+
+   #+begin_src conf-javaprop
+     lzma_persistent_buffer 1 // Keep LZMA compression in memory, reduces need for reloads
+     cl_always_flush_models 0 // Keep models loaded, maintains preloading
+
+     filesystem_buffer_size 32768 // 32KB for better block size optimization
+     filesystem_max_stdio_read 64 // Use a higher max read cap (64MB)
+   #+end_src
 
 ** Threading
-These settings pertain specifically to using asynchronous (threaded) execution. Since all the systems I play TF2 on have more than 4 cores, this brings much improvement to overall performance.
-#+begin_src conf-javaprop
-  net_queued_packet_thread 1 // Threaded packet splitting
 
-  mat_queue_mode 2 // Force asynchronous material queue
-  r_threaded_renderables 1 // Asynchronous renderables
-  r_threaded_particles 1 // Asynchronous particle loading
-  r_queued_decals 1 // Offload decals to the material queue
-  r_queued_post_processing 1 // Offload post-processing to the material queue
+   These settings pertain specifically to using asynchronous (threaded)
+   execution. Since all the systems I play TF2 on have more than 4 cores, this
+   brings much improvement to overall performance.
 
-  host_thread_mode 1 // Use threaded frame behavior if possible
+   #+begin_src conf-javaprop
+     net_queued_packet_thread 1 // Threaded packet splitting
 
-  mod_load_anims_async 1 // Asynchronous animation loading
-  mod_load_mesh_async 1 // Asynchronous mesh loading
-  mod_load_vcollide_async 1 // Asynchronous vcollide loading
+     mat_queue_mode 2 // Force asynchronous material queue
+     r_threaded_renderables 1 // Asynchronous renderables
+     r_threaded_particles 1 // Asynchronous particle loading
+     r_queued_decals 1 // Offload decals to the material queue
+     r_queued_post_processing 1 // Offload post-processing to the material queue
 
-  snd_async_fullyasync 1 // Fully asynchronous sounds
-  snd_async_spew_blocking 0 // Disable async spew
-  snd_async_minsize 0 // Fast path to async load
-  snd_mix_async 1 // Asynchronous sound mixing
+     host_thread_mode 1 // Use threaded frame behavior if possible
 
-  mod_forcetouchdata 0 // Load data as needed
-  mod_touchalldata 0 // Asynchronous loading
-  mod_forcedata 0 // Don't force loading
-#+end_src
+     mod_load_anims_async 1 // Asynchronous animation loading
+     mod_load_mesh_async 1 // Asynchronous mesh loading
+     mod_load_vcollide_async 1 // Asynchronous vcollide loading
+
+     snd_async_fullyasync 1 // Fully asynchronous sounds
+     snd_async_spew_blocking 0 // Disable async spew
+     snd_async_minsize 0 // Fast path to async load
+     snd_mix_async 1 // Asynchronous sound mixing
+
+     mod_forcetouchdata 0 // Load data as needed
+     mod_touchalldata 0 // Asynchronous loading
+     mod_forcedata 0 // Don't force loading
+   #+end_src
 
 ** Graphics
-Effects that will speed up the game without truly changing visual effects.
-#+begin_src conf-javaprop
-  mat_vsync 0 // Dramatically reduce input lag
-  mat_powersavingsmode 0 // Disable "power saving"
-  engine_no_focus_sleep 0 // Linux fix for focus problems
-  r_fastzreject 1 // Offload some rendering to the CPU
-  r_occlusion 1 // Don't draw what isn't seen
-  r_occludeemaxarea 7.5 // Skip occlusion of large objects
-  r_occluderminarea 15 // Skip things too small
-  r_occludermincount 1 // In case somehow one is filtered out
-  r_norefresh 1 // Don't store useless stuff
-  fast_fogvolume 1 // Fast path for water leaf
-  r_pixelfog 1 // Use pixel shader for fog
-  sv_alternateticks 0 // Run every tick
-  mod_offline_hdr_switch 1 // Avoid obsolete stuff
-  mat_forcemanagedtextureintohardware 0 // No trickery
-  r_hunkalloclightmaps 1 // Fix some light data bugs and cache lighting
-  sys_minidumpspewlines 0 // Don't spew to memory in case of crash
-  mp_usehwmmodels -1 // Skip HW morph models
-  fps_max 90 // Cap FPS so it doesn't go hog wild
-#+end_src
+
+   Effects that will speed up the game without truly changing visual effects.
+
+   #+begin_src conf-javaprop
+     mat_vsync 0 // Dramatically reduce input lag
+     mat_powersavingsmode 0 // Disable "power saving"
+     engine_no_focus_sleep 0 // Linux fix for focus problems
+     r_fastzreject 1 // Offload some rendering to the CPU
+     r_occlusion 1 // Don't draw what isn't seen
+     r_occludeemaxarea 7.5 // Skip occlusion of large objects
+     r_occluderminarea 15 // Skip things too small
+     r_occludermincount 1 // In case somehow one is filtered out
+     r_norefresh 1 // Don't store useless stuff
+     fast_fogvolume 1 // Fast path for water leaf
+     r_pixelfog 1 // Use pixel shader for fog
+     sv_alternateticks 0 // Run every tick
+     mod_offline_hdr_switch 1 // Avoid obsolete stuff
+     mat_forcemanagedtextureintohardware 0 // No trickery
+     r_hunkalloclightmaps 1 // Fix some light data bugs and cache lighting
+     sys_minidumpspewlines 0 // Don't spew to memory in case of crash
+     mp_usehwmmodels -1 // Skip HW morph models
+     fps_max 90 // Cap FPS so it doesn't go hog wild
+   #+end_src
 
 ** OpenGL
-For systems that use OpenGL instead of DirectX (read: Linux), these settings ensure optimal graphics performance.
-#+begin_src conf-javaprop
-  gl_debug_output 0 // No need for debug output
-  gl_pow2_tempmem 1 // Improve memory allocation
-  gl_mtglflush_at_tof 1 // Makes frame output smoother for tiny fps hit
-  gl_magnify_resolve_mode 1 // Use the fastest resolve mode when upscaling
-  mat_texture_reload_frame_swap_workaround 0 // Disable a heavy workaround
-#+end_src
+
+   For systems that use OpenGL instead of DirectX (read: Linux), these settings
+   ensure optimal graphics performance.
+
+   #+begin_src conf-javaprop
+     gl_debug_output 0 // No need for debug output
+     gl_pow2_tempmem 1 // Improve memory allocation
+     gl_mtglflush_at_tof 1 // Makes frame output smoother for tiny fps hit
+     gl_magnify_resolve_mode 1 // Use the fastest resolve mode when upscaling
+     mat_texture_reload_frame_swap_workaround 0 // Disable a heavy workaround
+   #+end_src
 
 * Network
-Arguably the most important part of an online multiplayer game is its networking. If it isn't configured well, you're screwed.
+
+  Arguably the most important part of an online multiplayer game is its
+  networking. If it isn't configured well, you're screwed.
 
 ** Packets
-Packets are the actual data being sent over a network. Having sane packet sizes ensures that performance does not falter on weaker networks.
-#+begin_src conf-javaprop
-  rate 196608 // Rate for server communication
-  net_splitpacket_maxrate 80000 // Sane split packet rate
-  net_maxcleartime .025 // Maximum time to hold a packet
 
-  net_compresspackets 1 // Compress packets
-  net_compresspackets_minsize 128 // Sane packet size
-  net_maxroutable 1200 // Largest packet size to send
-  net_maxfragments 1200 // Largest packet fragment size
-  net_maxpacketdrop 0 // Use all packets
+   Packets are the actual data being sent over a network. Having sane packet
+   sizes ensures that performance does not falter on weaker networks.
 
-  cl_cmdrate 66 // Commands to send per second
-  cl_updaterate 66 // Commands to receive per second
-#+end_src
+   #+begin_src conf-javaprop
+     rate 196608 // Rate for server communication
+     net_splitpacket_maxrate 80000 // Sane split packet rate
+     net_maxcleartime .025 // Maximum time to hold a packet
+
+     net_compresspackets 1 // Compress packets
+     net_compresspackets_minsize 128 // Sane packet size
+     net_maxroutable 1200 // Largest packet size to send
+     net_maxfragments 1200 // Largest packet fragment size
+     net_maxpacketdrop 0 // Use all packets
+
+     cl_cmdrate 66 // Commands to send per second
+     cl_updaterate 66 // Commands to receive per second
+   #+end_src
 
 ** Snapshots
-Obviously what you are seeing is not actually what is /currently/ seen by the server. You will be behind the server at all times, but managing /snapshots/ received from the server will ensure that performance is sustained and you are able to connect shots.
-#+begin_src conf-javaprop
-  cl_interp_all 1 // Keep all entities in the interpolation list
-  cl_interp_ratio 1 // The ratio for client interpolation of server snapshots
-  cl_interp .0184848 // Interpolation timing, accounts for drops and minimal jitter
 
-  cl_smooth 1 // Smooth the view to minimize stuttering
-  cl_smoothtime 0.0184848 // Sync with interpolation rate
-  cl_pred_optimize 1 // Predict player positions between snapshots
+   Obviously what you are seeing is not actually what is /currently/ seen by the
+   server. You will be behind the server at all times, but managing /snapshots/
+   received from the server will ensure that performance is sustained and you are
+   able to connect shots.
 
-  cl_timeout 60 // Longer wait before timing out of a server
-#+end_src
+   #+begin_src conf-javaprop
+     cl_interp_all 1 // Keep all entities in the interpolation list
+     cl_interp_ratio 1 // The ratio for client interpolation of server snapshots
+     cl_interp 0 // Interpolation timing
+
+     cl_smooth 1 // Smooth the view to minimize stuttering
+     cl_smoothtime 0.0184848 // Sync with interpolation rate
+     cl_pred_optimize 1 // Predict player positions between snapshots
+
+     cl_timeout 60 // Longer wait before timing out of a server
+   #+end_src
 
 ** File handling
-Sometimes servers will try to load a bunch of extra crap. All I want are maps, I don't need extra sounds and models and crap.
-#+begin_src conf-javaprop
-  net_maxfilesize 64 // Maximum extra content file size
-  cl_downloadfilter mapsonly // Only download maps
-#+end_src
+
+   Sometimes servers will try to load a bunch of extra crap. All I want are
+   maps, I don't need extra sounds and models and crap.
+
+   #+begin_src conf-javaprop
+     net_maxfilesize 64 // Maximum extra content file size
+     cl_downloadfilter mapsonly // Only download maps
+   #+end_src
 
 * Graphics
-These settings specifically pertain to graphics and improving the visual quality of the game or providing extra performance by making it look like total garbage.
+
+  These settings specifically pertain to graphics and improving the visual
+  quality of the game or providing extra performance by making it look like
+  total garbage.
 
 ** Textures
-General settings about textures.
-#+begin_src conf-javaprop
-  mat_mipmaptextures 0 // Don't do texture mipmapping
-  mat_trilinear 0 // Don't do trilinear filtering
-  mat_filtertextures 0 // Don't filter textures
-  mat_picmip 2 // Highest texture performance
-#+end_src
+
+   General settings about textures.
+
+   #+begin_src conf-javaprop
+     mat_mipmaptextures 0 // Don't do texture mipmapping
+     mat_trilinear 0 // Don't do trilinear filtering
+     mat_filtertextures 0 // Don't filter textures
+     mat_picmip -1 // Best textures possible
+   #+end_src
 
 ** Models
-General settings about models.
-#+begin_src conf-javaprop
-  r_rootlod 2 // Maximum performance models
-  r_lod -1 // Properly fade through LODs
-  lod_transitiondist -1 // Don't fade objects
-  mat_max_worldmesh_vertices 65536 // Reduce mesh count
-#+end_src
+
+   General settings about models.
+
+   #+begin_src conf-javaprop
+     r_rootlod 0 // Best models possible
+     r_lod -1 // Properly fade through LODs
+     lod_transitiondist -1 // Don't fade objects
+     mat_max_worldmesh_vertices 65536 // Default mesh count
+   #+end_src
 
 ** Water
-Liquid found in 2fort and on a couple other maps. An attempt to make it as easy to see things in the water as possible.
-#+begin_src conf-javaprop
-  r_waterdrawreflection 0 // No water reflections, boosts performance
-  r_waterdrawrefraction 1 // See underwater things from above
-  r_waterforceexpensive 0 // Don't force higher quality water
-  r_cheapwaterstart 0 // Use cheap water as much as possible
-  r_cheapwaterend .1 // please and thank you
-#+end_src
+
+   Liquid found in 2fort and on a couple other maps. An attempt to make it as
+   easy to see things in the water as possible.
+
+   #+begin_src conf-javaprop
+     r_waterdrawreflection 0 // No water reflections, boosts performance
+     r_waterdrawrefraction 1 // See underwater things from above
+     r_waterforceexpensive 0 // Don't force higher quality water
+     r_cheapwaterstart 0 // Use cheap water as much as possible
+     r_cheapwaterend .1 // please and thank you
+   #+end_src
 
 ** Shadows
-Another thing I don't really need. They're equally costly.
-#+begin_src conf-javaprop
-  r_shadows 0 // Disable shadows
-  r_shadowrendertotexture 0 // Don't do fancy shadows
-  cl_blobbyshadows 1 // Use blobs in place of character shape
-  r_shadowmaxrendered 0 // I said DISABLE SHADOWS
 
-  r_flashlightdepthtexture 0 // Disable the CPU intensive depth texturing
-  r_flashlightmodels 0 // Disable flashlight effect on models
-  r_flashlightculldepth 0 // Disable extra flashlight stuff
-  r_flashlightscissor 0 // ^
-  r_flashlightrender 0 // ^
-#+end_src
+   Another thing I don't really need. They're equally costly.
+
+   #+begin_src conf-javaprop
+     r_shadows 0 // Disable shadows
+     r_shadowrendertotexture 0 // Don't do fancy shadows
+     cl_blobbyshadows 1 // Use blobs in place of character shape
+     r_shadowmaxrendered 0 // I said DISABLE SHADOWS
+
+     r_flashlightdepthtexture 0 // Disable the CPU intensive depth texturing
+     r_flashlightmodels 0 // Disable flashlight effect on models
+     r_flashlightculldepth 0 // Disable extra flashlight stuff
+     r_flashlightscissor 0 // ^
+     r_flashlightrender 0 // ^
+   #+end_src
 
 ** Lighting
-This allows for some cheeky stuff to happen, and I can get even better visuals this way.
-#+begin_src conf-javaprop
-  r_dopixelvisibility 1 // Run pixel visibility testing
-  r_pixelvisibility_partial 1 // Use partial visibility algorithm
-  mat_filterlightmaps 0 // Don't filter lightmaps
 
-  mat_phong 0 // Disable phong shader for major performance improvement
-  mat_specular 1 // This keeps shiny things shiny when mat_phong is 0
-  mat_bumpmap 0 // Keep bumpmapping, small performance cost
+   This allows for some cheeky stuff to happen, and I can get even better
+   visuals this way.
 
-  mat_disable_fancy_blending 1 // Disable some fancier effects
-  mat_disable_lightwarp 1 // ^
-  mat_disable_ps_patch 1 // ^
-  mat_disable_bloom 1 // ^
+   #+begin_src conf-javaprop
+     r_dopixelvisibility 1 // Run pixel visibility testing
+     r_pixelvisibility_partial 1 // Use partial visibility algorithm
+     mat_filterlightmaps 0 // Don't filter lightmaps
 
-  r_ambientboost 1 // Boost reflected light for vision advantages
-  r_rimlight 1 // A distinct choice to make characters pop out
-  r_ambientmin .4 // Make characters stand out further
+     mat_phong 0 // Disable phong shader for major performance improvement
+     mat_specular 1 // This keeps shiny things shiny when mat_phong is 0
+     mat_bumpmap 1 // Keep bumpmapping, small performance cost
 
-  r_dynamic 0 // Don't flash muzzles, it's distracting
-  r_maxdlights 0 // No dynamic lights at all, please
-  tf_sheen_alpha_firstperson 0 // No kill-streak sheen
-  tf_sheen_framerate 0 // ^
+     mat_disable_fancy_blending 0 // Allow some fancy effects
+     mat_disable_lightwarp 0 // ^
+     mat_disable_ps_patch 0 // ^
+     mat_disable_bloom 0 // ^
 
-  r_worldlights 0 // Don't use world lights
-  r_worldlightmin .1 // Reject most world lighting
+     r_ambientboost 1 // Boost reflected light for vision advantages
+     r_rimlight 1 // A distinct choice to make characters pop out
+     r_ambientmin .4 // Make characters stand out further
 
-  r_lightaverage 0 // Disable a costly lighting system
-  mat_parallaxmap 0 // Possibly obsolete
-#+end_src
+     r_dynamic 0 // Don't flash muzzles, it's distracting
+     r_maxdlights 0 // No dynamic lights at all, please
+     tf_sheen_alpha_firstperson 0 // No kill-streak sheen
+     tf_sheen_framerate 0 // ^
+
+     r_worldlights 4 // Use world lighting
+     r_worldlightmin .0008 // Reject insignificant world lighting
+
+     r_lightaverage 0 // Disable a costly lighting system
+     mat_parallaxmap 0 // Possibly obsolete
+   #+end_src
 
 ** Particles
-The real drain when it comes to Team Fortress 2. This stuff KILLS threads.
-#+begin_src conf-javaprop
-  mat_reduceparticles 0 // Doesn't need to be on, particle SYSTEMS are the problem
-  tf_particles_disable_weather 1 // Clarity, one less particle system
-  cl_new_impact_effects 0 // Use the older impact effects
-  r_drawflecks 0 // Don't draw flecks from impacts
-  cl_particle_batch_mode 2 // Optimized particle batching
-#+end_src
+
+   The real drain when it comes to Team Fortress 2. This stuff KILLS threads.
+
+   #+begin_src conf-javaprop
+     mat_reduceparticles 0 // Doesn't need to be on, particle SYSTEMS are the problem
+     tf_particles_disable_weather 1 // Clarity, one less particle system
+     cl_new_impact_effects 0 // Use the older impact effects
+     r_drawflecks 0 // Don't draw flecks from impacts
+     cl_particle_batch_mode 2 // Optimized particle batching
+   #+end_src
 
 ** Antialiasing
-I don't use it. It's slow and bogs the game down.
-#+begin_src conf-javaprop
-  mat_software_aa_strength 0 // No software AA
-  mat_software_aa_strength_vgui 0 // ^
-  mat_alphacoverage 0 // No alpha-to-coverage
-  mat_antialias 1 // Do not do antialiasing
-#+end_src
+
+   I don't use it. It's slow and bogs the game down.
+
+   #+begin_src conf-javaprop
+     mat_software_aa_strength 0 // No software AA
+     mat_software_aa_strength_vgui 0 // ^
+     mat_alphacoverage 0 // No alpha-to-coverage
+     mat_antialias 1 // Do not do antialiasing
+   #+end_src
 
 ** Post-Processing
-These are some effects that are best removed.
-#+begin_src conf-javaprop
-  mat_motion_blur_enabled 0 // No motion blur, PLEASE
-  mat_postprocessing_combine 0 // Combine post-processing effects
-  mat_hdr_level 0 // No HDR, LDR only
-  mat_colorcorrection 0 // No color correction
-  mat_colcorrection_disableentities 1 // Skip most client-think for color correction
-  mat_autoexposure_max 0 // No autoexposure
-  mat_autoexposure_min 0 // please and thanks
-#+end_src
+
+   These are some effects that are best removed.
+
+   #+begin_src conf-javaprop
+     mat_motion_blur_enabled 0 // No motion blur, PLEASE
+     mat_postprocessing_combine 0 // Combine post-processing effects
+     mat_hdr_level 0 // No HDR, LDR only
+     mat_colorcorrection 0 // No color correction
+     mat_colcorrection_disableentities 1 // Skip most client-think for color correction
+     mat_autoexposure_max 0 // No autoexposure
+     mat_autoexposure_min 0 // please and thanks
+   #+end_src
 
 * Sound
-These settings specifically relate to sound configuration.
+
+  These settings specifically relate to sound configuration.
 
 ** Volume
-Team Fortress 2 is /incredibly/ loud by default. I don't like that one bit.
-#+begin_src conf-javaprop
-  volume .15 // Don't blow out my ears (or my speakers)
-  snd_musicvolume 0 // Don't play music (I play my own music)
-#+end_src
+
+   Team Fortress 2 is /incredibly/ loud by default. I don't like that one bit.
+
+   #+begin_src conf-javaprop
+     volume .15 // Don't blow out my ears (or my speakers)
+     snd_musicvolume 0 // Don't play music (I play my own music)
+   #+end_src
 
 ** Quality
-This allows a balancing of quality and performance when it comes to audio.
-#+begin_src conf-javaprop
-  snd_mixahead .066 // Balance between sound delay and performance, syncs w/ sound clock
-  snd_pitchquality 0 // Use a linear mixer for sounds, to improve performance
-  snd_surround_speakers -1 // Automatically determine speaker configuration
-  snd_disable_mixer_duck 1 // Play all sounds at intended volumes
-  snd_cull_duplicates 0 // Don't prevent playing duplicate sounds
-  snd_noextraupdate 1 // Do not update sound twice
-#+end_src
+
+   This allows a balancing of quality and performance when it comes to audio.
+
+   #+begin_src conf-javaprop
+     snd_mixahead .066 // Balance between sound delay and performance
+     snd_pitchquality 0 // Use a linear mixer for sounds, to improve performance
+     snd_surround_speakers -1 // Automatically determine speaker configuration
+     snd_disable_mixer_duck 1 // Play all sounds at intended volumes
+     snd_cull_duplicates 0 // Don't prevent playing duplicate sounds
+     snd_noextraupdate 1 // Do not update sound twice
+   #+end_src
 
 ** Spatialization
-Sound travel, volume falloff, and DSP effects are configured here. But I don't really wanna use any of them, so I'll just turn DSP off.
-#+begin_src conf-javaprop
-  snd_spatialize_roundrobin 3 // Spatialize every 8 frames using round-robin
-  dsp_enhance_stereo 0 // Disable extra spatial DSP effects and delays
-  dsp_facingaway 0 // Disable facing away and directional effects
-  snd_defer_trace 1 // Defer spatialization to next frame tracing
-  dsp_slow_cpu 1 // Disable enhanced spatialization
-  dsp_speaker 0 // Disable administrator effects
-  dsp_spatial 0 // Disable all  spatial effects
-  dsp_water 0 // Disable the water effects
-  dsp_room 0 // Disable automatic DSP
-#+end_src
+
+   Sound travel, volume falloff, and DSP effects are configured here. But I
+   don't really wanna use any of them, so I'll just turn DSP off.
+
+   #+begin_src conf-javaprop
+     snd_spatialize_roundrobin 3 // Spatialize every 8 frames using round-robin
+     dsp_enhance_stereo 0 // Disable extra spatial DSP effects and delays
+     dsp_facingaway 0 // Disable facing away and directional effects
+     snd_defer_trace 1 // Defer spatialization to next frame tracing
+     dsp_slow_cpu 1 // Disable enhanced spatialization
+     dsp_speaker 0 // Disable administrator effects
+     dsp_spatial 0 // Disable all  spatial effects
+     dsp_water 0 // Disable the water effects
+     dsp_room 0 // Disable automatic DSP
+   #+end_src
 
 ** Hit-/Kill-sounds
-I have my own hit- and kill-sounds which are in this repository. I configure them here.
-#+begin_src conf-javaprop
-  tf_dingalingaling 1 // Aural feedback to landing a hit
-  tf_dingalingaling_lasthit 1 // Aural feedback to landing a kill
-  tf_dingaling_volume 1 // I want to hear it loud and clear
-  tf_dingaling_pitchmindmg 140 // High pitched when damage is low
-  tf_dingaling_pitchmaxdmg 5 // BOOMING when damage is high
-  tf_dingaling_lasthit_pitchmindmg 140 // High pitched when damage is low
-  tf_dingaling_lasthit_pitchmaxdmg 5 // BOOMING when damage is high
-#+end_src
+
+   I have my own hit- and kill-sounds which are in this repository. I configure
+   them here.
+
+   #+begin_src conf-javaprop
+     tf_dingalingaling 1 // Aural feedback to landing a hit
+     tf_dingalingaling_lasthit 1 // Aural feedback to landing a kill
+     tf_dingaling_volume 1 // I want to hear it loud and clear
+     tf_dingaling_pitchmindmg 140 // High pitched when damage is low
+     tf_dingaling_pitchmaxdmg 5 // BOOMING when damage is high
+     tf_dingaling_lasthit_pitchmindmg 140 // High pitched when damage is low
+     tf_dingaling_lasthit_pitchmaxdmg 5 // BOOMING when damage is high
+   #+end_src
 
 * Gameplay
-These are settings specifically pertaining to gameplay and ensuring the game is interrupted as little as possible by discomforts.
+
+  These are settings specifically pertaining to gameplay and ensuring the game
+  is interrupted as little as possible by discomforts.
 
 ** Keyboard/Mouse
-Team Fortress 2 has some incredibly less-than-sane defaults...
-#+begin_src conf-javaprop
-  cl_autorezoom 0 // Don't rezoom as sniper
-  cl_autoreload 1 // Don't require pressing r to reload
-  hud_fastswitch 1 // Immediately switch weapons
-  hud_classautokill 0 // Don't suicide on class change
-  tf_medigun_autoheal 1 // Don't require holding down the mouse to heal
 
-  m_filter 0 // Responsive input
-  m_rawinput 1 // Use raw mouse input
-  m_mousespeed 0 // Don't accelerate the mouse
-  m_mouseaccel1 0 // please
-  m_mouseaccel2 0 // pretty please
-  m_customaccel 0 // with a cherry on top
-  sensitivity 2.25 // Mouse sensitivity (i use a trackball tho)
-  zoom_sensitivity_ratio .7934714 // Use same sensitivity when scoped
-#+end_src
+   Team Fortress 2 has some incredibly less-than-sane defaults...
+
+   #+begin_src conf-javaprop
+     cl_autorezoom 0 // Don't rezoom as sniper
+     cl_autoreload 1 // Don't require pressing r to reload
+     hud_fastswitch 1 // Immediately switch weapons
+     hud_classautokill 0 // Don't suicide on class change
+     tf_medigun_autoheal 1 // Don't require holding down the mouse to heal
+
+     m_filter 0 // Responsive input
+     m_rawinput 1 // Use raw mouse input
+     m_mousespeed 0 // Don't accelerate the mouse
+     m_mouseaccel1 0 // please
+     m_mouseaccel2 0 // pretty please
+     m_customaccel 0 // with a cherry on top
+     sensitivity 2.25 // Mouse sensitivity (i use a trackball tho)
+     zoom_sensitivity_ratio .7934714 // Use same sensitivity when scoped
+   #+end_src
 
 ** Matchmaking
-I hate the matchmaking system, but I guess it's the fastest way to get a decent game of 2fort.
-#+begin_src conf-javaprop
-  tf_party_join_request_mode 1 // Have people request to join
-  tf_mm_debug_level 0 // Don't spew matchmaking debug stuff in console
-#+end_src
+
+   I hate the matchmaking system, but I guess it's the fastest way to get a
+   decent game of 2fort.
+
+   #+begin_src conf-javaprop
+     tf_party_join_request_mode 1 // Have people request to join
+     tf_mm_debug_level 0 // Don't spew matchmaking debug stuff in console
+   #+end_src
 
 * HUD
-These are settings to make the game's HUD more involved or less involved in various ways.
+
+  These are settings to make the game's HUD more involved or less involved in
+  various ways.
 
 ** In-Game
-These are settings related to HUD elements in-game.
+
+   These are settings related to HUD elements in-game.
 
 *** Field of View
-The default FOV makes it feel like you're looking through a cardboard tube. We also don't need the viewmodel to stick out so much.
-#+begin_src conf-javaprop
-  fov_desired 90 // Maximum FOV
-  viewmodel_fov 70 // Highest supported viewmodel FOV
-  viewmodel_fov_demo 70 // Use same viewmodel FOV in demos
-  tf_use_min_viewmodels 1 // Use minimal viewmodels
-#+end_src
+
+    The default FOV makes it feel like you're looking through a cardboard
+    tube. We also don't need the viewmodel to stick out so much.
+
+    #+begin_src conf-javaprop
+      fov_desired 90 // Maximum FOV
+      viewmodel_fov 70 // Highest supported viewmodel FOV
+      viewmodel_fov_demo 70 // Use same viewmodel FOV in demos
+      tf_use_min_viewmodels 1 // Use minimal viewmodels
+    #+end_src
 
 *** Crosshair
-It's a red dot. In the middle of the screen. Simple as that. It looks the same as the dot when you scope in as sniper except always red.
-#+begin_src conf-javaprop
-  cl_crosshair_file crosshair5 // Use the dot
-  cl_crosshairalpha 255 // Crosshair alpha channel
-  cl_crosshair_red 255 // Crosshair red channel
-  cl_crosshair_green 0 // Crosshair green channel
-  cl_crosshair_blue 0 // Crosshair blue channel
-  cl_crosshair_scale 23 // Make the dot not tiny
-  tf_hud_no_crosshair_on_scope_zoom 1 // Don't show crosshair when scoped
-#+end_src
+
+    It's a red dot. In the middle of the screen. Simple as that. It looks the
+    same as the dot when you scope in as sniper except always red.
+
+    #+begin_src conf-javaprop
+      cl_crosshair_file crosshair5 // Use the dot
+      cl_crosshairalpha 255 // Crosshair alpha channel
+      cl_crosshair_red 255 // Crosshair red channel
+      cl_crosshair_green 0 // Crosshair green channel
+      cl_crosshair_blue 0 // Crosshair blue channel
+      cl_crosshair_scale 23 // Make the dot not tiny
+      tf_hud_no_crosshair_on_scope_zoom 1 // Don't show crosshair when scoped
+    #+end_src
 
 *** Damage Numbers
-I like having big yellow damage numbers. Feels good.
-#+begin_src conf-javaprop
-  hud_combattext 1 // Enable damage numbers
-  hud_combattext_red 255 // Damage numbers red channel
-  hud_combattext_green 255 // Damage numbers green channel
-  hud_combattext_blue 0 // Damage numbers blue channel
-#+end_src
+
+    I like having big yellow damage numbers. Feels good.
+
+    #+begin_src conf-javaprop
+      hud_combattext 1 // Enable damage numbers
+      hud_combattext_red 255 // Damage numbers red channel
+      hud_combattext_green 255 // Damage numbers green channel
+      hud_combattext_blue 0 // Damage numbers blue channel
+    #+end_src
 
 *** Target ID
-This lets you know who you're looking at. I also put health here instead of floating over people.
-#+begin_src conf-javaprop
-  tf_hud_target_id_alpha 230 // Target ID opacity
-  tf_hud_target_id_show_avatars 0 // Don't show avatar in target ID
-  tf_hud_target_id_disable_floating_health 1 // Put health in target ID
-#+end_src
+
+    This lets you know who you're looking at. I also put health here instead of
+    floating over people.
+
+    #+begin_src conf-javaprop
+      tf_hud_target_id_alpha 230 // Target ID opacity
+      tf_hud_target_id_show_avatars 0 // Don't show avatar in target ID
+      tf_hud_target_id_disable_floating_health 1 // Put health in target ID
+    #+end_src
 
 *** Killstreaks
-I don't care to see them, don't show them.
-#+begin_src conf-javaprop
-  cl_hud_killstreak_display_time 0 // Never show killstreaks
-#+end_src
+
+    I don't care to see them, don't show them.
+
+    #+begin_src conf-javaprop
+      cl_hud_killstreak_display_time 0 // Never show killstreaks
+    #+end_src
 
 ** Not In-Game
-These are settings related to menus mainly but there's a little bit more here too.
+
+   These are settings related to menus mainly but there's a little bit more here
+   too.
 
 *** Console
-Ah, the console. I use it a lot because I happen to break things a lot.
-#+begin_src conf-javaprop
-  con_enable 1 // Enable the developer console
-  con_nprint_bgalpha 100 // Opacity
-  con_nprint_bgborder 1 // Border...?
-#+end_src
+
+    Ah, the console. I use it a lot because I happen to break things a lot.
+
+    #+begin_src conf-javaprop
+      con_enable 1 // Enable the developer console
+      con_nprint_bgalpha 100 // Opacity
+      con_nprint_bgborder 1 // Border...?
+    #+end_src
 
 *** Tutorials
-I don't want to be prompted about tutorials every time I start Team Fortress 2.
-#+begin_src conf-javaprop
-  cl_showhelp 0 // Disable all the annoying tutorial shit (this whole block is that)
-  cl_mainmenu_updateglow 0
-  cl_ask_bigpicture_controller_opt_out 1
-  cl_ask_blacklist_opt_out 1
-  cl_ask_favorite_opt_out 1
-  sb_dontshow_maxplayer_warning 1
-  replay_quitmsg_dontaskagain 1
-  replay_movie_reveal_warning 0
-  replay_renderqueue_first_add 1
-  replay_perftip_count_enter 1
-  replay_perftip_count_exit 1
-  replay_perftip_count_freecam_enter 1
-  replay_perftip_count_freecam_exit 1
-  replay_perftip_count_freecam_exit2 1
-  replay_replayeditor_rewindmsgcounter 1
-  cl_promotional_codes_button_show 1
-  tf_casual_welcome_hide 1
-  tf_comp_welcome_hide 1
-  tf_find_a_match_hint_viewed 1
-  tf_coach_request_nevershowagain 1
-  tf_explanations_backpackpanel 1
-  tf_explanations_charinfo_armory_panel 1
-  tf_explanations_charinfopanel 1
-  tf_explanations_craftingpanel 1
-  tf_explanations_discardpanel 1
-  tf_explanations_store 1
-  tf_warpaint_explanation_viewed 1
-  cl_hud_playerclass_playermodel_showed_confirm_dialog 1
-  tf_weapon_select_demo_time 0
-  tf_hud_notification_show_count_ghost_controls 3
-  tf_hud_notification_show_count_ghost_controls_no_respawn 3
-  tf_hud_notification_show_count_kart_controls 3
-  tf_inspect_hint_count 1000
-  tf_mvm_tabs_discovered 1
-  tf_quest_map_intro_viewed 1
-  tf_romevision_skip_prompt 1
-  tf_show_maps_details_explanation_count 0
-  tf_show_preset_explanation_in_class_loadout 0
-  tf_show_taunt_explanation_in_class_loadout 0
-  tf_taunt_always_show_hint 0
-  cl_training_class_unlock_all
-  tf_training_has_prompted_for_forums 1
-  tf_training_has_prompted_for_loadout 1
-  tf_training_has_prompted_for_offline_practice 1
-  tf_training_has_prompted_for_options 1
-  tf_training_has_prompted_for_training 1
-#+end_src
+
+    I don't want to be prompted about tutorials every time I start Team
+    Fortress 2.
+
+    #+begin_src conf-javaprop
+      cl_showhelp 0 // Disable all the annoying tutorial shit (this whole block is that)
+      cl_mainmenu_updateglow 0
+      cl_ask_bigpicture_controller_opt_out 1
+      cl_ask_blacklist_opt_out 1
+      cl_ask_favorite_opt_out 1
+      sb_dontshow_maxplayer_warning 1
+      replay_quitmsg_dontaskagain 1
+      replay_movie_reveal_warning 0
+      replay_renderqueue_first_add 1
+      replay_perftip_count_enter 1
+      replay_perftip_count_exit 1
+      replay_perftip_count_freecam_enter 1
+      replay_perftip_count_freecam_exit 1
+      replay_perftip_count_freecam_exit2 1
+      replay_replayeditor_rewindmsgcounter 1
+      cl_promotional_codes_button_show 1
+      tf_casual_welcome_hide 1
+      tf_comp_welcome_hide 1
+      tf_find_a_match_hint_viewed 1
+      tf_coach_request_nevershowagain 1
+      tf_explanations_backpackpanel 1
+      tf_explanations_charinfo_armory_panel 1
+      tf_explanations_charinfopanel 1
+      tf_explanations_craftingpanel 1
+      tf_explanations_discardpanel 1
+      tf_explanations_store 1
+      tf_warpaint_explanation_viewed 1
+      cl_hud_playerclass_playermodel_showed_confirm_dialog 1
+      tf_weapon_select_demo_time 0
+      tf_hud_notification_show_count_ghost_controls 3
+      tf_hud_notification_show_count_ghost_controls_no_respawn 3
+      tf_hud_notification_show_count_kart_controls 3
+      tf_inspect_hint_count 1000
+      tf_mvm_tabs_discovered 1
+      tf_quest_map_intro_viewed 1
+      tf_romevision_skip_prompt 1
+      tf_show_maps_details_explanation_count 0
+      tf_show_preset_explanation_in_class_loadout 0
+      tf_show_taunt_explanation_in_class_loadout 0
+      tf_taunt_always_show_hint 0
+      cl_training_class_unlock_all
+      tf_training_has_prompted_for_forums 1
+      tf_training_has_prompted_for_loadout 1
+      tf_training_has_prompted_for_offline_practice 1
+      tf_training_has_prompted_for_options 1
+      tf_training_has_prompted_for_training 1
+    #+end_src
 
 *** Matchmaking
-The matchmaking menu sucks. At least I can make it not take so long to open.
-#+begin_src conf-javaprop
-  tf_dashboard_slide_time 0 // Immediately open matchmaking menu
-  tf_mm_dashboard_slide_panel_step 100 // Open the whole menu at once
-#+end_src
+
+    The matchmaking menu sucks. At least I can make it not take so long to
+    open.
+
+    #+begin_src conf-javaprop
+      tf_dashboard_slide_time 0 // Immediately open matchmaking menu
+      tf_mm_dashboard_slide_panel_step 100 // Open the whole menu at once
+    #+end_src
 
 * TODO temporarily kept here
 these are settings I haven't gotten around to merging into the literate configuration. please bear with me.
@@ -568,7 +666,7 @@ these are settings I haven't gotten around to merging into the literate configur
   cl_hud_minmode 0
 
   // Disable some annoying shit some servers do
-  cl_disablehtmlmotd 0
+  cl_disablehtmlmotd 1
   alias closed_htmlpage "echo BLOCKED an attempted wait timer"
 
   // Unsorted
